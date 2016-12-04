@@ -2,15 +2,14 @@ package com.kerolos.models;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 
 import com.kerolos.resources.Resources;
 
 public class Robot {
 
 	private final int diameter = Resources.ROBOT_DIAMETER;
-	private int x;
-	private int y;
+	private double x;
+	private double y;
 	private Color color;
 	private boolean foundExit;
 	
@@ -23,28 +22,35 @@ public class Robot {
 	
 	public void paint(Graphics2D g) {
 		g.setColor(color);
-		g.fillOval(x, y, diameter, diameter);
+		g.fillOval((int) x, (int) y, diameter, diameter);
 	}
 	
 	public void setColor(Color c){
 		color = c;
 	}
 	
-	public int getY(){
+	public double getY(){
 		return y;
 	}
 	
-	public int getX(){
+	public double getX(){
 		return x;
 	}
 	
-	public void moveX(int value){
+	public void moveX(double value){
 		x += value;
 	}
 	
-	
-	public void moveY(int value){
+	public void moveY(double value){
 		y += value;
+	}
+	
+	public double getCenterX(){
+		return (x + (Resources.ROBOT_DIAMETER/2));
+	}
+	
+	public double getCenterY(){
+		return (y + (Resources.ROBOT_DIAMETER/2)); 
 	}
 	
 	public boolean getFoundExit(){
@@ -57,5 +63,9 @@ public class Robot {
 	
 	public void setY(int y){
 		this.y = y;
+	}
+	
+	public void setFoundExit(boolean value){
+		foundExit = value;
 	}
 }
