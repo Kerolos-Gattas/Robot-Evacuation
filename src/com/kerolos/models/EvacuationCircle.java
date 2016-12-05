@@ -26,9 +26,10 @@ public class EvacuationCircle {
 	}
 	
 	public void paint(Graphics2D g) {
+		g.setColor(Color.black);
 		g.drawOval(x, y, diameter, diameter);
 		g.setColor(Color.green);
-		g.drawOval(exitX, exitY, Resources.EXIT_DIAMETER, Resources.EXIT_DIAMETER);
+		g.fillOval(exitX, exitY, Resources.EXIT_DIAMETER, Resources.EXIT_DIAMETER);
 	}
 	
 	public int getExitX(){

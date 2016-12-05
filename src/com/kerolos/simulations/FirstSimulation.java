@@ -11,7 +11,7 @@ import com.kerolos.models.EvacuationCircle;
 import com.kerolos.models.Robot;
 import com.kerolos.resources.Resources;
 
-public class FirstSimulation  extends JPanel{
+public class FirstSimulation extends JPanel{
 
 	private static final long serialVersionUID = 4176177314569070820L;
 	
@@ -38,25 +38,46 @@ public class FirstSimulation  extends JPanel{
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		
-		circle.paint(g2d);
 		
 		firstRobot.setColor(Color.blue);
 		firstRobot.paint(g2d);
 		
 		secondRobot.setColor(Color.red);
 		secondRobot.paint(g2d);
+		
+		circle.paint(g2d);
 	}
 	
 	public void runSimulation() throws InterruptedException{
 		Thread.sleep(750);
 
-		for(int i = 0; i < circle.getRadius(); i++){
+		double angle = Math.atan2(firstRobot.getCenterY()-circle.getCircleCenter(), firstRobot.getCenterX()-circle.getCircleCenter());
+		double xVel1 = 1* Math.cos(angle);
+		double yVel1 = 1* Math.sin(angle);
+		
+		double angle1 = Math.atan2(secondRobot.getCenterY()-circle.getCircleCenter(), secondRobot.getCenterX()-circle.getCircleCenter());
+		double xVel12 = 1* Math.cos(angle1);
+		double yVel12 = 1* Math.sin(angle1);
+		double distance1 = Math.sqrt((firstRobot.getX() - circle.getCircleCenter())*(firstRobot.getX() - circle.getCircleCenter()) + (firstRobot.getY() - circle.getCircleCenter())*(firstRobot.getY() - circle.getCircleCenter()));
+
+		
+		for(int i = 0; i < (circle.getRadius() - distance1); i++){
+			firstRobot.moveY(yVel1);
+			firstRobot.moveX(xVel1);
+			secondRobot.moveY(yVel12);
+			secondRobot.moveX(xVel12);
+
+			this.repaint();
+
+			Thread.sleep(10);
+		}
+		/*for(int i = 0; i < circle.getRadius(); i++){
 			firstRobot.moveY(moveSpeed);
 			secondRobot.moveY(-moveSpeed);
 			this.repaint();
 
 			Thread.sleep(10);
-		}
+		}*/
 
 		while(!firstRobot.getFoundExit() && !secondRobot.getFoundExit()){
 			
@@ -65,8 +86,8 @@ public class FirstSimulation  extends JPanel{
 			
 			firstRobot.setX((int) (circleCenter + (circle.getRadius() * Math.cos(firstRobotTheta + thetaFactor))));
 			firstRobot.setY((int) (circleCenter + (circle.getRadius() * Math.sin(firstRobotTheta + thetaFactor))));
-			secondRobot.setX((int) (circleCenter + (circle.getRadius() * Math.cos(secondRobotTheta + thetaFactor))));
-			secondRobot.setY((int) (circleCenter + (circle.getRadius() * Math.sin(secondRobotTheta + thetaFactor))));
+			secondRobot.setX((int) (circleCenter + (circle.getRadius() * Math.cos(secondRobotTheta + (-thetaFactor)))));
+			secondRobot.setY((int) (circleCenter + (circle.getRadius() * Math.sin(secondRobotTheta + (-thetaFactor)))));
 			
 			int firstRobotXdis = (int) firstRobot.getCenterX() - circle.getExitCenterX();
 			int firstRobotYdis = (int) firstRobot.getCenterY() - circle.getExitCenterY();
@@ -174,10 +195,12 @@ public class FirstSimulation  extends JPanel{
 				}
 			}
 		}*/
+		
+		Thread.sleep(150);
 		if(firstRobot.getFoundExit()){
-			double angle = Math.atan2(firstRobot.getY()-secondRobot.getY(), firstRobot.getX()-secondRobot.getX());
-			double xVel = 2* Math.cos(angle);
-			double yVel = 2* Math.sin(angle);
+			double angel = Math.atan2(firstRobot.getY()-secondRobot.getY(), firstRobot.getX()-secondRobot.getX());
+			double xVel = 2* Math.cos(angel);
+			double yVel = 2* Math.sin(angel);
 			while(true){
 				secondRobot.moveX(xVel);
 				secondRobot.moveY(yVel);
@@ -190,9 +213,9 @@ public class FirstSimulation  extends JPanel{
 			}
 		}
 		else{
-			double angle = Math.atan2(secondRobot.getY()-firstRobot.getY(), secondRobot.getX()-firstRobot.getX());
-			double xVel = 2* Math.cos(angle);
-			double yVel = 2* Math.sin(angle);
+			double angel = Math.atan2(secondRobot.getY()-firstRobot.getY(), secondRobot.getX()-firstRobot.getX());
+			double xVel = 2* Math.cos(angel);
+			double yVel = 2* Math.sin(angel);
 			while(true){
 				firstRobot.moveX(xVel);
 				firstRobot.moveY(yVel);
