@@ -40,10 +40,10 @@ public class FirstSimulation extends JPanel{
 		
 		
 		firstRobot.setColor(Color.blue);
-		firstRobot.paint(g2d);
+		//firstRobot.paint(g2d);
 		
 		secondRobot.setColor(Color.red);
-		secondRobot.paint(g2d);
+		//secondRobot.paint(g2d);
 		
 		circle.paint(g2d);
 	}

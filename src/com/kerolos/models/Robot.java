@@ -12,17 +12,42 @@ public class Robot {
 	private double y;
 	private Color color;
 	private boolean foundExit;
-	
+	private boolean otherRobotFoundExit;
+	private int circleCenter;
+	private boolean reachedCircle;
+
 	public Robot(){
 		x = (Resources.FRAME_SIZE/2) - (Resources.ROBOT_DIAMETER/2);
 		y = (Resources.FRAME_SIZE/2) - (Resources.ROBOT_DIAMETER/2);	
-		color = Color.BLACK;
+		color = Color.black;
 		foundExit = false;
+		reachedCircle = false;
 	}
 	
-	public void paint(Graphics2D g) {
+	public Robot(Color c){
+		x = (Resources.FRAME_SIZE/2) - (Resources.ROBOT_DIAMETER/2);
+		y = (Resources.FRAME_SIZE/2) - (Resources.ROBOT_DIAMETER/2);	
+		color = c;
+		foundExit = false;
+		reachedCircle = false;
+	}
+	
+	public Robot(double x, double y, Color c){
+		this.x = x;
+		this.y = y;
+		this.color = c;
+		foundExit = false;
+		reachedCircle = false;
+	}
+	
+	public void drawRobot(Graphics2D g) {
 		g.setColor(color);
 		g.fillOval((int) x, (int) y, diameter, diameter);
+	}
+	
+	public void move(double x, double y){
+		this.x = x;
+		this.y = y;
 	}
 	
 	public void setColor(Color c){
@@ -67,5 +92,9 @@ public class Robot {
 	
 	public void setFoundExit(boolean value){
 		foundExit = value;
+	}
+	
+	public boolean getReachedCircle(){
+		return reachedCircle;
 	}
 }
