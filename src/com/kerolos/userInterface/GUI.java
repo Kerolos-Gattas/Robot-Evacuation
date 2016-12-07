@@ -19,21 +19,8 @@ public class GUI{
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		Simulation simulation1 = new Simulation();
-		frame.add(simulation1);
-		simulation1.runSimulation();
-		while(!simulation1.getFirstSimulationDone()){
-			System.out.println("reached");
-
-		}
-		
-		//frame.remove(simulation1);
-		System.out.println("reached");
-
-		Robot firstRobot = new Robot(500,500,Color.red);
-		Robot secondRobot = new Robot(600,450,Color.blue);
-		Simulation simulation2 = new Simulation(firstRobot, secondRobot, true);
-		frame.add(simulation2);
-		simulation2.runSimulation();
+		Simulation simulation = new Simulation();
+		frame.add(simulation);
+		simulation.runSimulation();
 	}
 }

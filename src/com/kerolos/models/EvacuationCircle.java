@@ -32,6 +32,15 @@ public class EvacuationCircle {
 		g.fillOval(exitX, exitY, Resources.EXIT_DIAMETER, Resources.EXIT_DIAMETER);
 	}
 	
+	public void resetExit(){
+		double rangeMin = 0;
+		double rangeMax = 2 * Math.PI;
+		Random r = new Random();
+		double randomValue = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
+		exitX = (int) ((Resources.FRAME_SIZE/2) + ((Resources.CIRCLE_DIAMETER/2) * Math.cos(randomValue)) - (Resources.EXIT_DIAMETER/2));
+		exitY = (int) ((Resources.FRAME_SIZE/2) + ((Resources.CIRCLE_DIAMETER/2) * Math.sin(randomValue)) - (Resources.EXIT_DIAMETER/2));
+	}
+	
 	public int getExitX(){
 		return exitX;
 	}
@@ -54,5 +63,13 @@ public class EvacuationCircle {
 	
 	public int getExitCenterY(){
 		return (exitY + (Resources.EXIT_DIAMETER/2)); 
+	}
+
+	public int getX(){
+		return x;
+	}
+	
+	public int getY(){
+		return y;
 	}
 }	

@@ -2,6 +2,7 @@ package com.kerolos.models;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.Random;
 
 import com.kerolos.resources.Resources;
 
@@ -24,6 +25,36 @@ public class Robot {
 		reachedCircle = false;
 	}
 	
+	public Robot(double incrementY){
+		x = (Resources.FRAME_SIZE/2) - (Resources.ROBOT_DIAMETER/2);
+		y = (Resources.FRAME_SIZE/2) - (Resources.ROBOT_DIAMETER/2) + incrementY;	
+		color = Color.black;
+		foundExit = false;
+		reachedCircle = false;
+	}
+	
+	public Robot(Random r){
+
+		double rangeMin = Resources.FRAME_SIZE/2 - Resources.CIRCLE_DIAMETER/2;
+		double rangeMax = Resources.FRAME_SIZE/2 + Resources.CIRCLE_DIAMETER/2;
+		
+		double distance = 1000;
+		double randomValue1 = 0;
+		double randomValue2 = 0;
+		while(distance > (Resources.CIRCLE_DIAMETER/2)){
+			randomValue1 = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
+			randomValue2 = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
+			distance = Math.sqrt((randomValue1 - (Resources.FRAME_SIZE/2))*(randomValue1 - (Resources.FRAME_SIZE/2)) + (randomValue2 - (Resources.FRAME_SIZE/2))*(randomValue2 - (Resources.FRAME_SIZE/2)));
+		}
+
+		x = randomValue1;
+		y = randomValue2;	
+		
+		color = Color.black;
+		foundExit = false;
+		reachedCircle = false;
+	}
+	
 	public Robot(Color c){
 		x = (Resources.FRAME_SIZE/2) - (Resources.ROBOT_DIAMETER/2);
 		y = (Resources.FRAME_SIZE/2) - (Resources.ROBOT_DIAMETER/2);	
@@ -36,6 +67,14 @@ public class Robot {
 		this.x = x;
 		this.y = y;
 		this.color = c;
+		foundExit = false;
+		reachedCircle = false;
+	}
+	
+	public Robot(Robot robot){
+		this.x = robot.x;
+		this.y = robot.y;
+		this.color = robot.color;
 		foundExit = false;
 		reachedCircle = false;
 	}
@@ -82,11 +121,11 @@ public class Robot {
 		return foundExit;
 	}
 	
-	public void setX(int x){
+	public void setX(double x){
 		this.x = x;
 	}
 	
-	public void setY(int y){
+	public void setY(double y){
 		this.y = y;
 	}
 	
@@ -96,5 +135,9 @@ public class Robot {
 	
 	public boolean getReachedCircle(){
 		return reachedCircle;
+	}
+	
+	public void setReachedCircle(boolean value){
+		reachedCircle = value;
 	}
 }

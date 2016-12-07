@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -23,7 +24,8 @@ public class Simulation extends JPanel{
 	private double thetaFactor;
 	private int circleCenter;
 	private boolean firstSimulationDone;
-
+	private boolean secondSimulationDone;
+	
 	public Simulation(){
 		circle = new EvacuationCircle();
 		this.firstRobot = new Robot(Color.red);
@@ -32,17 +34,18 @@ public class Simulation extends JPanel{
 		moveSpeed = 1;
 		circleCenter = circle.getCircleCenter() - (Resources.ROBOT_DIAMETER/2);
 		firstSimulationDone = false;
+		secondSimulationDone = false;
 	}
 
 	public Simulation(Robot first, Robot second, boolean firstSimulationDone){
 		circle = new EvacuationCircle();
-		this.firstRobot = first;
-		this.secondRobot = second;
+		this.firstRobot = new Robot(first);
+		this.secondRobot = new Robot(second);
 		this.thetaFactor = 0.0100;
 		moveSpeed = 1;
 		circleCenter = circle.getCircleCenter() - (Resources.ROBOT_DIAMETER/2);
 		this.firstSimulationDone = firstSimulationDone;
-
+		secondSimulationDone = false;
 	}
 	
 	@Override
@@ -58,7 +61,12 @@ public class Simulation extends JPanel{
 	}
 	
 	public void runSimulation(){
-		
+		try {
+			Thread.sleep(400);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		double angle = Math.atan2(firstRobot.getCenterY()-circle.getCircleCenter(), firstRobot.getCenterX()-circle.getCircleCenter());
 		double xVel1 = 1* Math.cos(angle);
 		double yVel1 = 1* Math.sin(angle);
@@ -161,15 +169,50 @@ public class Simulation extends JPanel{
     			firstRobot.move(firstRobot.getX() + xVel, firstRobot.getY() + yVel);
     			
 				double distance = Math.sqrt((firstRobot.getX() - secondRobot.getX())*(firstRobot.getX() - secondRobot.getX()) + (firstRobot.getY() - secondRobot.getY())*(firstRobot.getY() - secondRobot.getY()));
+                repaint();
 
 				if(distance < 5){
-					firstSimulationDone = true;
+					if(!firstSimulationDone){
+						firstSimulationDone = true;
+						Robot firstRobot = new Robot(100);
+						Robot secondRobot = new Robot();
+						resetRobots(firstRobot, secondRobot);
+						circle.resetExit();
+						runSimulation();
+					}
+					else{
+						secondSimulationDone = true;
+						Random r = new Random();
+						//double oneHunderedAndEightyDegreePointX = (Resources.FRAME_SIZE/2) - (Resources.CIRCLE_DIAMETER/2) + 250;
+						//double ninetyDegreePointY = (Resources.FRAME_SIZE/2) - (Resources.CIRCLE_DIAMETER/2) + 250;
+
+						Robot firstRobot = new Robot(r);
+						Robot secondRobot = new Robot(r);
+						
+						resetRobots(firstRobot, secondRobot);
+						circle.resetExit();
+						runSimulation();
+					}
 					timer.stop();
 				}
-                repaint();
             }
         });
         timer.start();	
+	}
+	
+	public void resetRobots(Robot first, Robot second){
+		firstRobot.setX(first.getX());
+		firstRobot.setY(first.getY());
+		secondRobot.setX(second.getX());
+		secondRobot.setY(second.getY());
+		
+		firstRobot.setFoundExit(false);
+		secondRobot.setFoundExit(false);
+		
+		firstRobot.setReachedCircle(false);
+		secondRobot.setReachedCircle(false);
+
+		repaint();
 	}
 	
 	public boolean getFirstSimulationDone(){
