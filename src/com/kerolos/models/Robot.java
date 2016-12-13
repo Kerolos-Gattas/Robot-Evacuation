@@ -9,14 +9,20 @@ import com.kerolos.resources.Resources;
 public class Robot {
 
 	private final int diameter = Resources.ROBOT_DIAMETER;
+	
+	//x and y start coordinates for the robot
 	private double x;
 	private double y;
+	
 	private Color color;
+	
+	//Check if the robot found the exit
 	private boolean foundExit;
-	private boolean otherRobotFoundExit;
-	private int circleCenter;
+	
+	//check if the robot has reached the boundaries of the circle
 	private boolean reachedCircle;
 
+	
 	public Robot(){
 		x = (Resources.FRAME_SIZE/2) - (Resources.ROBOT_DIAMETER/2);
 		y = (Resources.FRAME_SIZE/2) - (Resources.ROBOT_DIAMETER/2);	
@@ -25,6 +31,16 @@ public class Robot {
 		reachedCircle = false;
 	}
 	
+	//Constructor for the first simulation scenario
+	public Robot(Color c){
+		x = (Resources.FRAME_SIZE/2) - (Resources.ROBOT_DIAMETER/2);
+		y = (Resources.FRAME_SIZE/2) - (Resources.ROBOT_DIAMETER/2);	
+		color = c;
+		foundExit = false;
+		reachedCircle = false;
+	}
+	
+	//Constructor for the second simulation scenario
 	public Robot(double incrementY){
 		x = (Resources.FRAME_SIZE/2) - (Resources.ROBOT_DIAMETER/2);
 		y = (Resources.FRAME_SIZE/2) - (Resources.ROBOT_DIAMETER/2) + incrementY;	
@@ -33,15 +49,18 @@ public class Robot {
 		reachedCircle = false;
 	}
 	
+	//Constructor for the third simulation scenario
 	public Robot(Random r){
 
 		double rangeMin = Resources.FRAME_SIZE/2 - Resources.CIRCLE_DIAMETER/2;
 		double rangeMax = Resources.FRAME_SIZE/2 + Resources.CIRCLE_DIAMETER/2;
 		
-		double distance = 1000;
+		double distance = 100000;
 		double randomValue1 = 0;
 		double randomValue2 = 0;
-		while(distance > (Resources.CIRCLE_DIAMETER/2)){
+		
+		//get a random x and y inside the circle
+		while(distance > (Resources.CIRCLE_DIAMETER/2 - Resources.ROBOT_DIAMETER)){
 			randomValue1 = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
 			randomValue2 = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
 			distance = Math.sqrt((randomValue1 - (Resources.FRAME_SIZE/2))*(randomValue1 - (Resources.FRAME_SIZE/2)) + (randomValue2 - (Resources.FRAME_SIZE/2))*(randomValue2 - (Resources.FRAME_SIZE/2)));
@@ -51,30 +70,6 @@ public class Robot {
 		y = randomValue2;	
 		
 		color = Color.black;
-		foundExit = false;
-		reachedCircle = false;
-	}
-	
-	public Robot(Color c){
-		x = (Resources.FRAME_SIZE/2) - (Resources.ROBOT_DIAMETER/2);
-		y = (Resources.FRAME_SIZE/2) - (Resources.ROBOT_DIAMETER/2);	
-		color = c;
-		foundExit = false;
-		reachedCircle = false;
-	}
-	
-	public Robot(double x, double y, Color c){
-		this.x = x;
-		this.y = y;
-		this.color = c;
-		foundExit = false;
-		reachedCircle = false;
-	}
-	
-	public Robot(Robot robot){
-		this.x = robot.x;
-		this.y = robot.y;
-		this.color = robot.color;
 		foundExit = false;
 		reachedCircle = false;
 	}
@@ -99,14 +94,6 @@ public class Robot {
 	
 	public double getX(){
 		return x;
-	}
-	
-	public void moveX(double value){
-		x += value;
-	}
-	
-	public void moveY(double value){
-		y += value;
 	}
 	
 	public double getCenterX(){
